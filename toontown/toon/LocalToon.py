@@ -370,6 +370,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.laffMeter = LaffMeter.LaffMeter(self.style, self.hp, self.maxHp)
         self.laffMeter.setAvatar(self)
         # Use laffMeter.container as that's what is actually parented to aspect2d
+        # max: note, there are some side effects with boing effect on damage taken
+        self.laffMeter.container.reparent_to(base.a2dBottomLeft)
         self.laffMeter.container.set_scale(0.075)
         if self.style.getAnimal() == 'monkey':
             # Monkey icon tweaked due to large ears

@@ -14,7 +14,7 @@ class TownBattleToonPanel(DirectFrame):
 
     def __init__(self, id):
         gui = loader.loadModel('phase_3.5/models/gui/battle_gui')
-        DirectFrame.__init__(self, relief=None, image=gui.find('**/ToonBtl_Status_BG'), image_color=Vec4(0.5, 0.9, 0.5, 0.7))
+        DirectFrame.__init__(self, parent=base.aspect2d, relief=None, image=gui.find('**/ToonBtl_Status_BG'), image_color=Vec4(0.5, 0.9, 0.5, 0.7))
         self.setScale(0.8)
         self.initialiseoptions(TownBattleToonPanel)
         self.avatar = None

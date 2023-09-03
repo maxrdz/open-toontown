@@ -9,7 +9,7 @@ class LaffMeter(DirectFrame):
     def __init__(self, av_dna, hp, maxHp):
         DirectFrame.__init__(self, relief=None, sortOrder=50)
         self.initialiseoptions(LaffMeter)
-        self.container = DirectFrame(parent=base.a2dBottomLeft, relief=None)
+        self.container = DirectFrame(parent=self, relief=None)
         self.style = av_dna
         self.av = None
         self.hp = hp
@@ -69,8 +69,10 @@ class LaffMeter(DirectFrame):
             self.tooth4 = DirectFrame(parent=self.openSmile, relief=None, image=gui.find('**/tooth_4'))
             self.tooth5 = DirectFrame(parent=self.openSmile, relief=None, image=gui.find('**/tooth_5'))
             self.tooth6 = DirectFrame(parent=self.openSmile, relief=None, image=gui.find('**/tooth_6'))
-            self.maxLabel = DirectLabel(parent=self.eyes, relief=None, pos=(0.442, 0, 0.051), text='120', text_scale=0.4, text_font=ToontownGlobals.getInterfaceFont())
-            self.hpLabel = DirectLabel(parent=self.eyes, relief=None, pos=(-0.398, 0, 0.051), text='120', text_scale=0.4, text_font=ToontownGlobals.getInterfaceFont())
+            self.maxLabel = DirectLabel(parent=self.eyes, relief=None, pos=(0.442, 0, 0.051), text='120',
+                                        text_scale=0.4, text_font=ToontownGlobals.getInterfaceFont())
+            self.hpLabel = DirectLabel(parent=self.eyes, relief=None, pos=(-0.398, 0, 0.051), text='120',
+                                       text_scale=0.4, text_font=ToontownGlobals.getInterfaceFont())
             self.teeth = [self.tooth6,
              self.tooth5,
              self.tooth4,
