@@ -621,6 +621,7 @@ class Suit(Avatar.Avatar):
             self.loadModel('phase_3.5' + filePrefix + 'mod')
         self.loadAnims(animDict)
         self.setSuitClothes()
+        self.setBlend(frameBlend=True)
 
     def generateAnimDict(self):
         animDict = {}
