@@ -125,6 +125,7 @@ class BossCog(Avatar.Avatar):
                 animDict[anim] = '%s-%s-%s' % (GenericModel, partName, anim)
 
             self.loadAnims(animDict, partName)
+        self.setBlend(frameBlend=True)
 
         self.stars = BattleProps.globalPropPool.getProp('stun')
         self.stars.setPosHprScale(7, 0, 0, 0, 0, -90, 3, 3, 3)
