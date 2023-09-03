@@ -126,12 +126,12 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.bookOpenButton = DirectButton(image=(bookModel.find('**/BookIcon_CLSD'),
                                                   bookModel.find('**/BookIcon_OPEN'),
                                                   bookModel.find('**/BookIcon_RLVR')),
-                                           relief=None, pos=(-0.175, 0, 0.183), scale=0.305,
+                                           relief=None, pos=(-0.175, 0, 0.173), scale=0.305,
                                            parent=base.a2dBottomRight, command=self.__open)
         self.bookCloseButton = DirectButton(image=(bookModel.find('**/BookIcon_OPEN'),
                                                    bookModel.find('**/BookIcon_CLSD'),
                                                    bookModel.find('**/BookIcon_RLVR2')),
-                                            relief=None, pos=(-0.175, 0, 0.183), scale=0.305,
+                                            relief=None, pos=(-0.175, 0, 0.173), scale=0.305,
                                             parent=base.a2dBottomRight, command=self.__close)
         self.bookOpenButton.hide()
         self.bookCloseButton.hide()

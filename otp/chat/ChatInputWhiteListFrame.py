@@ -17,7 +17,11 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
         FSM.FSM.__init__(self, 'ChatInputWhiteListFrame')
         self.okayToSubmit = True
         self.receiverId = None
-        DirectFrame.__init__(self, parent=aspect2dp, pos=(0, 0, 0.3), relief=None, image=DGG.getDefaultDialogGeom(), image_scale=(1.6, 1, 1.4), image_pos=(0, 0, -0.05), image_color=OTPGlobals.GlobalDialogColor, borderWidth=(0.01, 0.01))
+        # max: Note to others: The regular chat box is parented to this DirectFrame.
+        # Keep the regular chat box parented to this class and keep this class parented to a2dTopLeft.
+        DirectFrame.__init__(self, parent=base.a2dTopLeft, pos=(0, 0, 0.3), relief=None,
+                             image=DGG.getDefaultDialogGeom(), image_scale=(1.6, 1, 1.4), image_pos=(0, 0, -0.05),
+                             image_color=OTPGlobals.GlobalDialogColor, borderWidth=(0.01, 0.01))
         optiondefs = {'parent': self,
          'relief': DGG.SUNKEN,
          'scale': 0.05,

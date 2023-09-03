@@ -338,9 +338,16 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
         self.whisperAvatarId = None
         self.toPlayer = 0
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
-        okButtonImage = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
-        self.emoteNoAccessPanel = DirectFrame(parent=hidden, relief=None, state='normal', text=OTPLocalizer.SCEmoteNoAccessMsg, frameSize=(-1, 1, -1, 1), geom=DGG.getDefaultDialogGeom(), geom_color=OTPGlobals.GlobalDialogColor, geom_scale=(0.92, 1, 0.6), geom_pos=(0, 0, -.08), text_scale=0.08)
-        self.okButton = DirectButton(parent=self.emoteNoAccessPanel, image=okButtonImage, relief=None, text=OTPLocalizer.SCEmoteNoAccessOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.0, 0.0, -0.2), command=self.handleEmoteNoAccessDone)
+        okButtonImage = (buttons.find('**/ChtBx_OKBtn_UP'),
+                         buttons.find('**/ChtBx_OKBtn_DN'),
+                         buttons.find('**/ChtBx_OKBtn_Rllvr'))
+        self.emoteNoAccessPanel = DirectFrame(parent=hidden, relief=None, state='normal',
+                                              text=OTPLocalizer.SCEmoteNoAccessMsg, frameSize=(-1, 1, -1, 1),
+                                              geom=DGG.getDefaultDialogGeom(), geom_color=OTPGlobals.GlobalDialogColor,
+                                              geom_scale=(0.92, 1, 0.6), geom_pos=(0, 0, -.08), text_scale=0.08)
+        self.okButton = DirectButton(parent=self.emoteNoAccessPanel, image=okButtonImage, relief=None,
+                                     text=OTPLocalizer.SCEmoteNoAccessOK, text_scale=0.05, text_pos=(0.0, -0.1),
+                                     textMayChange=0, pos=(0.0, 0.0, -0.2), command=self.handleEmoteNoAccessDone)
         self.insidePartiesMenu = None
         self.createSpeedChat()
         self.whiteList = None
@@ -385,7 +392,10 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
         listenForSCEvent(TTSCSingingTerminal.TTSCSingingMsgEvent, self.handleSingingMsg)
         listenForSCEvent('SpeedChatStyleChange', self.handleSpeedChatStyleChange)
         listenForSCEvent(TTSCIndexedTerminal.TTSCIndexedMsgEvent, self.handleStaticTextMsg)
-        self.fsm = ClassicFSM.ClassicFSM('SpeedChat', [State.State('off', self.enterOff, self.exitOff, ['active']), State.State('active', self.enterActive, self.exitActive, ['off'])], 'off', 'off')
+        self.fsm = ClassicFSM.ClassicFSM('SpeedChat', [
+            State.State('off', self.enterOff, self.exitOff, ['active']),
+            State.State('active', self.enterActive, self.exitActive, ['off'])
+        ], 'off', 'off')
         self.fsm.enterInitialState()
         return
 
@@ -439,9 +449,10 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
         self.terminalSelectedEvent = self.speedChat.getEventName(SpeedChatGlobals.SCTerminalSelectedEvent)
         if base.config.GetBool('want-sc-auto-hide', 1):
             self.accept(self.terminalSelectedEvent, selectionMade)
-        self.speedChat.reparentTo(aspect2dp, DGG.FOREGROUND_SORT_INDEX)
-        scZ = 0.96
-        self.speedChat.setPos(-1.05, 0, scZ)
+        # max: Note, this is where Speedchat menu is put on screen. Re-parented and positioned only when active.
+        self.speedChat.reparentTo(base.a2dTopLeft, DGG.FOREGROUND_SORT_INDEX)
+        scZ = -0.05
+        self.speedChat.setPos(0.3, 0, scZ)
         self.speedChat.setWhisperMode(self.whisperAvatarId != None)
         self.speedChat.enter()
         return
