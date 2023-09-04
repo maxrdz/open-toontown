@@ -92,7 +92,16 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             newScale = oldScale = 0.8
             if WantNewsPage:
                 newScale = oldScale * ToontownGlobals.NewsPageScaleAdjust
-            self.bFriendsList = DirectButton(image=(friendsButtonNormal, friendsButtonPressed, friendsButtonRollover), relief=None, pos=(1.192, 0, 0.875), scale=newScale, text=('', TTLocalizer.FriendsListLabel, TTLocalizer.FriendsListLabel), text_scale=0.09, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=(0, -0.18), text_font=ToontownGlobals.getInterfaceFont(), command=self.sendFriendsListEvent)
+            # max: So this is where the friends button to access the friends list panel is located ...
+            # These major UI elements are scattered all over the place.
+            self.bFriendsList = DirectButton(image=(friendsButtonNormal, friendsButtonPressed, friendsButtonRollover),
+                                             parent=base.a2dTopRight, relief=None, pos=(-0.15, 0, -0.13),
+                                             scale=newScale, text=('',
+                                                                   TTLocalizer.FriendsListLabel,
+                                                                   TTLocalizer.FriendsListLabel),
+                                             text_scale=0.09, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1),
+                                             text_pos=(0, -0.18), text_font=ToontownGlobals.getInterfaceFont(),
+                                             command=self.sendFriendsListEvent)
             self.bFriendsList.hide()
             self.friendsListButtonActive = 0
             self.friendsListButtonObscured = 0

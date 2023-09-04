@@ -112,7 +112,7 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
          'FR',
          'BR']:
             self.rightmostPanel = FLPAll
-        DirectFrame.__init__(self, relief=None)
+        DirectFrame.__init__(self, parent=base.a2dTopRight, relief=None)
         self.listScrollIndex = [0,
          0,
          0,
@@ -141,19 +141,30 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
         if self.isLoaded == 1:
             return None
         self.isLoaded = 1
+        # max: Here is where the friends list is loaded and placed. (Note this is not the friends button)
         gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
         auxGui = loader.loadModel('phase_3.5/models/gui/avatar_panel_gui')
-        self.title = DirectLabel(parent=self, relief=None, text='', text_scale=TTLocalizer.FLPtitle, text_fg=(0, 0.1, 0.4, 1), pos=(0.007, 0.0, 0.2))
+        self.title = DirectLabel(parent=self, relief=None, text='', text_scale=TTLocalizer.FLPtitle,
+                                 text_fg=(0, 0.1, 0.4, 1), pos=(0.007, 0.0, 0.2))
         background_image = gui.find('**/FriendsBox_Open')
         self['image'] = background_image
-        self.setPos(1.1, 0, 0.54)
-        self.scrollList = DirectScrolledList(parent=self, relief=None, incButton_image=(gui.find('**/FndsLst_ScrollUp'),
-         gui.find('**/FndsLst_ScrollDN'),
-         gui.find('**/FndsLst_ScrollUp_Rllvr'),
-         gui.find('**/FndsLst_ScrollUp')), incButton_relief=None, incButton_pos=(0.0, 0.0, -0.316), incButton_image3_color=Vec4(0.6, 0.6, 0.6, 0.6), incButton_scale=(1.0, 1.0, -1.0), decButton_image=(gui.find('**/FndsLst_ScrollUp'),
-         gui.find('**/FndsLst_ScrollDN'),
-         gui.find('**/FndsLst_ScrollUp_Rllvr'),
-         gui.find('**/FndsLst_ScrollUp')), decButton_relief=None, decButton_pos=(0.0, 0.0, 0.117), decButton_image3_color=Vec4(0.6, 0.6, 0.6, 0.6), itemFrame_pos=(-0.17, 0.0, 0.06), itemFrame_relief=None, numItemsVisible=8, items=[])
+        self.setPos(-0.235, 0, -0.45)
+        self.scrollList = DirectScrolledList(parent=self, relief=None,
+                                             incButton_image=(gui.find('**/FndsLst_ScrollUp'),
+                                                              gui.find('**/FndsLst_ScrollDN'),
+                                                              gui.find('**/FndsLst_ScrollUp_Rllvr'),
+                                                              gui.find('**/FndsLst_ScrollUp')),
+                                             incButton_relief=None, incButton_pos=(0.0, 0.0, -0.316),
+                                             incButton_image3_color=Vec4(0.6, 0.6, 0.6, 0.6),
+                                             incButton_scale=(1.0, 1.0, -1.0),
+                                             decButton_image=(gui.find('**/FndsLst_ScrollUp'),
+                                                              gui.find('**/FndsLst_ScrollDN'),
+                                                              gui.find('**/FndsLst_ScrollUp_Rllvr'),
+                                                              gui.find('**/FndsLst_ScrollUp')),
+                                             decButton_relief=None, decButton_pos=(0.0, 0.0, 0.117),
+                                             decButton_image3_color=Vec4(0.6, 0.6, 0.6, 0.6),
+                                             itemFrame_pos=(-0.17, 0.0, 0.06), itemFrame_relief=None,
+                                             numItemsVisible=8, items=[])
         clipper = PlaneNode('clipper')
         clipper.setPlane(Plane(Vec3(-1, 0, 0), Point3(0.2, 0, 0)))
         clipNP = self.scrollList.attachNewNode(clipper)
