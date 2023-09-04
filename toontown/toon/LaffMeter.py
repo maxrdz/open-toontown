@@ -133,9 +133,13 @@ class LaffMeter(DirectFrame):
         name = self.av.uniqueName('laffMeterBoing') + '-' + str(self.this)
         ToontownIntervals.cleanup(name)
         if delta > 0:
-            ToontownIntervals.start(ToontownIntervals.getPulseLargerIval(self.container, name))
+            # max: use scale= param to keep animations to scale with laff meter container.
+            # Not sure why it assumes a scale of 1 by default.
+            ToontownIntervals.start(ToontownIntervals.getPulseLargerIval(self.container, name,
+                                                                         scale=self.container.get_scale()))
         else:
-            ToontownIntervals.start(ToontownIntervals.getPulseSmallerIval(self.container, name))
+            ToontownIntervals.start(ToontownIntervals.getPulseSmallerIval(self.container, name,
+                                                                          scale=self.container.get_scale()))
         return
 
     def adjustFace(self, hp, maxHp, quietly = 0):
