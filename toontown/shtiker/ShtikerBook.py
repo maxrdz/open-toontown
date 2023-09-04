@@ -14,7 +14,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('ShtikerBook')
 
     def __init__(self, doneEvent):
-        DirectFrame.__init__(self, relief=None, sortOrder=DGG.BACKGROUND_SORT_INDEX)
+        DirectFrame.__init__(self, relief=None, sortOrder=DGG.BACKGROUND_SORT_INDEX, scale=0.75)
         self.initialiseoptions(ShtikerBook)
         StateData.StateData.__init__(self, doneEvent)
         self.pages = []
@@ -61,8 +61,8 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         messenger.send('stickerBookEntered')
         base.playSfx(self.openSound)
         base.disableMouse()
-        base.render.hide()
-        base.setBackgroundColor(0.05, 0.15, 0.4)
+        #base.render.hide()
+        #base.setBackgroundColor(0.05, 0.15, 0.4)
         base.setCellsAvailable([base.rightCells[0]], 0)
         self.oldMin2dAlpha = NametagGlobals.getMin2dAlpha()
         self.oldMax2dAlpha = NametagGlobals.getMax2dAlpha()
@@ -88,7 +88,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         messenger.send('stickerBookExited')
         base.playSfx(self.closeSound)
         self.pages[self.currPageIndex].exit()
-        base.render.show()
+        #base.render.show()
         setBlackBackground = 0
         for obj in list(base.cr.doId2do.values()):
             if isinstance(obj, DistributedFireworkShow.DistributedFireworkShow) or isinstance(obj, DistributedPartyFireworksActivity.DistributedPartyFireworksActivity):
