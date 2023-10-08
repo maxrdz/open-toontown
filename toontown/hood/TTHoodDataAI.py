@@ -3,6 +3,7 @@ from . import HoodDataAI
 from toontown.toonbase import ToontownGlobals
 from toontown.safezone import DistributedTrolleyAI
 from toontown.safezone import TTTreasurePlannerAI
+from toontown.classicchars import DistributedMickeyAI
 from toontown.classicchars import DistributedSmartBenchAI
 from toontown.safezone import ButterflyGlobals
 from direct.task import Task
@@ -30,10 +31,11 @@ class TTHoodDataAI(HoodDataAI.HoodDataAI):
         self.treasurePlanner.start()
 
         # I do not participate in copyright violation
-        #self.classicChar = DistributedMickeyAI.DistributedMickeyAI(self.air)
-        #self.classicChar.generateWithRequired(self.zoneId)
-        #self.classicChar.start()
-        #self.addDistObj(self.classicChar)
+        # update: i got lonely
+        self.classicChar = DistributedMickeyAI.DistributedMickeyAI(self.air)
+        self.classicChar.generateWithRequired(self.zoneId)
+        self.classicChar.start()
+        self.addDistObj(self.classicChar)
 
         smart_bench = DistributedSmartBenchAI.DistributedSmartBenchAI(self.air)
         smart_bench.generateWithRequired(self.zoneId)

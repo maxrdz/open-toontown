@@ -46,6 +46,13 @@ __mickeyWaypoints = (('a',
   'f',
   1,
   []))
+# Keep Z of 4.1 minimum to avoid Z-fighting
+__smartBenchNodes = [
+    [Point3(98, 0, 4.1), Point3(90, 0, 0)],
+    [Point3(75, 20, 4.1), Point3(-180, 0, 0)],
+    [Point3(60, -16, 4.1), Point3(0, 0, 0)],
+    [Point3(40, 21, 4.1), Point3(-130, 0, 0)]
+]
 __minniePaths = {'a': (Point3(53.334, 71.057, 6.525), ('b', 'r')),
  'b': (Point3(127.756, 58.665, -11.75), ('a', 's', 'c')),
  'c': (Point3(130.325, 15.174, -2.003), ('b', 'd')),
@@ -334,6 +341,8 @@ startNode = 'a'
 def getPaths(charName, location = 0):
     if charName == TTLocalizer.Mickey:
         return __mickeyPaths
+    elif charName == TTLocalizer.SmartBench:
+        return __smartBenchNodes
     elif charName == TTLocalizer.VampireMickey:
         return __mickeyPaths
     elif charName == TTLocalizer.Minnie:

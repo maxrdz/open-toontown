@@ -11,10 +11,9 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
         DistributedNode.DistributedNode.__init__(self, cr)
 
         self.fsm = ClassicFSM.ClassicFSM(self.getName(), [
-            State.State("Empty", self.enterEmpty, self.exitEmpty, ["Boarded"]),
-            State.State("Boarded", self.enterBoarded, self.exitBoarded, ["Empty", "Full"]),
-            State.State("Full", self.enterFull, self.exitFull, ["Boarded"])
-        ], "Empty", "Empty")
+            State.State("Available", self.enterAvailable, self.exitAvailable, ["Occupied"]),
+            State.State("Occupied", self.enterOccupied, self.exitOccupied, ["Available"])
+        ], "Available", "Available")
         self.fsm.enterInitialState()
 
         self.bench_model = base.loader.loadModel("phase_13/models/tt_m_ara_prp_bench.bam")
@@ -30,20 +29,14 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
         self.reparentTo(base.hidden)
         DistributedNode.DistributedNode.delete(self)
 
-    def enterEmpty(self):
+    def enterAvailable(self):
         pass
 
-    def exitEmpty(self):
+    def exitAvailable(self):
         pass
 
-    def enterBoarded(self):
+    def enterOccupied(self):
         pass
 
-    def exitBoarded(self):
-        pass
-
-    def enterFull(self):
-        pass
-
-    def exitFull(self):
+    def exitOccupied(self):
         pass

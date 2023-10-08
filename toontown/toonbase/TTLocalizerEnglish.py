@@ -52,6 +52,7 @@ BuildingNametagFont = 'phase_3/models/fonts/MickeyFont'
 BuildingNametagShadow = None
 ProductPrefix = 'TT'
 Mickey = 'Mickey'
+SmartBench = 'SmartBench'
 VampireMickey = 'VampireMickey'
 Minnie = 'Minnie'
 WitchMinnie = 'WitchMinnie'
