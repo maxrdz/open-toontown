@@ -18,11 +18,12 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
         self.fsm.enterInitialState()
 
         self.bench_model = base.loader.loadModel("phase_13/models/tt_m_ara_prp_bench.bam")
+        self.bench_model.reparentTo(self)
 
     def generate(self):
         self.notify.info("Smart Bench generate received!")
         DistributedNode.DistributedNode.generate(self)
-        self.bench_model.reparentTo(self)
+        self.reparentTo(base.render)
 
     def enterEmpty(self):
         pass
