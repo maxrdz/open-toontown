@@ -3,7 +3,7 @@ from . import HoodDataAI
 from toontown.toonbase import ToontownGlobals
 from toontown.safezone import DistributedTrolleyAI
 from toontown.safezone import TTTreasurePlannerAI
-from toontown.classicchars import DistributedMickeyAI
+from toontown.classicchars import DistributedSmartBenchAI
 from toontown.safezone import ButterflyGlobals
 from direct.task import Task
 
@@ -19,18 +19,29 @@ class TTHoodDataAI(HoodDataAI.HoodDataAI):
 
     def startup(self):
         HoodDataAI.HoodDataAI.startup(self)
+
         trolley = DistributedTrolleyAI.DistributedTrolleyAI(self.air)
         trolley.generateWithRequired(self.zoneId)
         trolley.start()
         self.addDistObj(trolley)
         self.trolley = trolley
+
         self.treasurePlanner = TTTreasurePlannerAI.TTTreasurePlannerAI(self.zoneId)
         self.treasurePlanner.start()
-        self.classicChar = DistributedMickeyAI.DistributedMickeyAI(self.air)
-        self.classicChar.generateWithRequired(self.zoneId)
-        self.classicChar.start()
-        self.addDistObj(self.classicChar)
+
+        # I do not participate in copyright violation
+        #self.classicChar = DistributedMickeyAI.DistributedMickeyAI(self.air)
+        #self.classicChar.generateWithRequired(self.zoneId)
+        #self.classicChar.start()
+        #self.addDistObj(self.classicChar)
+
+        smart_bench = DistributedSmartBenchAI.DistributedSmartBenchAI(self.air)
+        smart_bench.generateWithRequired(self.zoneId)
+        self.addDistObj(smart_bench)
+        self.smartBench = smart_bench
+
         self.createButterflies(ButterflyGlobals.TTC)
+
         if simbase.blinkTrolley:
             taskMgr.doMethodLater(0.5, self._deleteTrolley, 'deleteTrolley')
         messenger.send('TTHoodSpawned', [self])

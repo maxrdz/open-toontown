@@ -21,6 +21,7 @@ from toontown.classicchars import DistributedFrankenDonald/AI
 from toontown.classicchars import DistributedDonaldDock/AI
 from toontown.classicchars import DistributedPluto/AI
 from toontown.classicchars import DistributedWesternPluto/AI
+from toontown.classicchars import DistributedSmartBench/AI
 from toontown.safezone import DistributedTrolley/AI
 from toontown.safezone import DistributedPartyGate/AI
 from toontown.suit import DistributedSuitPlanner/AI
@@ -686,6 +687,9 @@ dclass DistributedGoofySpeedway : DistributedCCharBase {
 };
 
 dclass DistributedSuperGoofy : DistributedGoofySpeedway {
+};
+
+dclass DistributedSmartBench : DistributedObject {
 };
 
 dclass DistributedPartyGate : DistributedObject {
