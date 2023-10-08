@@ -25,6 +25,11 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
         DistributedNode.DistributedNode.generate(self)
         self.reparentTo(base.render)
 
+    def delete(self):
+        self.notify.info("Smart Bench delete received!")
+        self.reparentTo(base.hidden)
+        DistributedNode.DistributedNode.delete(self)
+
     def enterEmpty(self):
         pass
 

@@ -689,7 +689,7 @@ dclass DistributedGoofySpeedway : DistributedCCharBase {
 dclass DistributedSuperGoofy : DistributedGoofySpeedway {
 };
 
-dclass DistributedSmartBench : DistributedObject {
+dclass DistributedSmartBench : DistributedNode {
 };
 
 dclass DistributedPartyGate : DistributedObject {
