@@ -6,6 +6,7 @@ from direct.distributed import DistributedNode
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from toontown.toonbase import ToontownGlobals
+from toontown.toontowngui import SmartBenchGUI
 
 
 class DistributedSmartBench(DistributedNode.DistributedNode):
@@ -22,15 +23,16 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
 
         self.bench_model = base.loader.loadModel("phase_13/models/tt_m_ara_prp_bench.bam")
         self.bench_model.reparentTo(self)
+        self.bench_gui = SmartBenchGUI.SmartBenchGUI()
 
     def generate(self):
-        self.notify.info("Smart Bench generate received!")
+        self.notify.debug("Smart Bench generate received!")
         DistributedNode.DistributedNode.generate(self)
         self.reparentTo(base.render)
         self.__initCollisions()
 
     def delete(self):
-        self.notify.info("Smart Bench delete received!")
+        self.notify.debug("Smart Bench delete received!")
         self.__deleteCollisions()
         self.reparentTo(base.hidden)
         DistributedNode.DistributedNode.delete(self)
@@ -72,11 +74,13 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
         return
 
     def __handleCollisionEnter(self, collEntry):
-        self.notify.info('Entering Smart Bench proximity collision sphere...')
+        self.notify.debug('Entering Smart Bench proximity collision sphere...')
+        base.messenger.send("approachedSmartBench")
         self.acceptOnce('exit' + self.cSphereNode.getName(), self.__handleCollisionExit)
 
     def __handleCollisionExit(self, collEntry):
-        self.notify.info('Exiting Smart Bench proximity collision sphere...')
+        self.notify.debug('Exiting Smart Bench proximity collision sphere...')
+        base.messenger.send("leftSmartBench")
         self.acceptOnce('enter' + self.cSphereNode.getName(), self.__handleCollisionEnter)
 
     def enterAvailable(self):

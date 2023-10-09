@@ -9761,3 +9761,6 @@ InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  5: 'Super Squirt!',
  6: ''}
 PlayingCardUnknown = 'Card Name is unknown'
+SmartBenchGUILabel = 'You\'ve approached a Smart Bench! Please choose an action using the buttons below.'
+SmartBenchCancel = 'Cancel this operation.\nThis action is permanent and cannot be undone.'
+SmartBenchSit = 'Sit on the brand new Smart Bench™'

@@ -20,7 +20,7 @@ class DistributedSmartBenchAI(DistributedNodeAI.DistributedNodeAI):
         self.fsm.enterInitialState()
 
     def generate(self):
-        self.notify.info("Smart Bench AI generate received!")
+        self.notify.debug("Smart Bench AI generate received!")
         DistributedNodeAI.DistributedNodeAI.generate(self)
 
         paths = CCharPaths.getPaths(TTLocalizer.SmartBench)
@@ -29,7 +29,7 @@ class DistributedSmartBenchAI(DistributedNodeAI.DistributedNodeAI):
         self.d_setHpr(node[1].getX(), node[1].getY(), node[1].getZ())
 
     def delete(self):
-        self.notify.info("Smart Bench AI delete received!")
+        self.notify.debug("Smart Bench AI delete received!")
         DistributedNodeAI.DistributedNodeAI.delete(self)
 
     def enterAvailable(self):
