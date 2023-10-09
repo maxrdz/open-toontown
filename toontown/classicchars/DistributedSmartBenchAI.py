@@ -1,3 +1,4 @@
+from panda3d.core import Point3
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedNodeAI
 from direct.fsm import ClassicFSM
@@ -23,8 +24,9 @@ class DistributedSmartBenchAI(DistributedNodeAI.DistributedNodeAI):
         DistributedNodeAI.DistributedNodeAI.generate(self)
 
         paths = CCharPaths.getPaths(TTLocalizer.SmartBench)
-        node = paths[randrange(3)]
-        self.b_setPosHpr(node[0][0], node[0][1], node[0][2], node[1][0], node[1][1], node[1][2])
+        node = paths[randrange(len(paths))]  # randrange is exclusive
+        self.d_setPos(node[0].getX(), node[0].getY(), node[0].getZ())
+        self.d_setHpr(node[1].getX(), node[1].getY(), node[1].getZ())
 
     def delete(self):
         self.notify.info("Smart Bench AI delete received!")
