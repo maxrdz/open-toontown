@@ -22,8 +22,8 @@ class DistributedSmartBenchAI(DistributedNodeAI.DistributedNodeAI):
         ], "Available", "Available")
         self.fsm.enterInitialState()
 
-        self.sitting_avatar: DistributedToonAI | None = None
-        self.bench_node: Point3 = Point3(0, 0, 0)
+        self.sittingAvatar: DistributedToonAI | None = None
+        self.benchNode: Point3 = Point3(0, 0, 0)
         self.timer: ToontownTimer = ToontownTimer.ToontownTimer(useImage=False, highlightNearEnd=False)
 
     def generate(self):
@@ -44,7 +44,7 @@ class DistributedSmartBenchAI(DistributedNodeAI.DistributedNodeAI):
             return
 
         if av and isinstance(av, DistributedToonAI):
-            self.sitting_avatar = av
+            self.sittingAvatar = av
             av.b_setAnimState("Sit", 1)
             self.sendUpdateToAvatarId(avid, "respondToonSit", [0])
             self.fsm.request("Occupied")
@@ -61,15 +61,15 @@ class DistributedSmartBenchAI(DistributedNodeAI.DistributedNodeAI):
         self.__toonSittingTimerDone()
 
     def requestMove(self):
-        if self.sitting_avatar:
-            self.sendUpdateToAvatarId(self.sitting_avatar.doId, "respondToonSit", [2])
+        if self.sittingAvatar:
+            self.sendUpdateToAvatarId(self.sittingAvatar.doId, "respondToonSit", [2])
             self.fsm.request("Available")
         self.chooseNewBenchPosition()
 
     def __toonSittingTimerDone(self):
-        if self.sitting_avatar and isinstance(self.sitting_avatar, DistributedToonAI):
-            self.sitting_avatar.b_setAnimState("neutral", 1)
-            self.sitting_avatar = None
+        if self.sittingAvatar and isinstance(self.sittingAvatar, DistributedToonAI):
+            self.sittingAvatar.b_setAnimState("neutral", 1)
+            self.sittingAvatar = None
             if not self.fsm.request("Available"):
                 self.notify.warning("No transition exists for requested state.")
         else:
@@ -78,9 +78,9 @@ class DistributedSmartBenchAI(DistributedNodeAI.DistributedNodeAI):
 
     def chooseNewBenchPosition(self):
         paths = CCharPaths.getPaths(TTLocalizer.SmartBench)
-        old_node = self.bench_node
-        node: Point3 = self.bench_node
-        while node == old_node:
+        oldNode = self.benchNode
+        node: Point3 = self.benchNode
+        while node == oldNode:
             node = paths[randrange(len(paths))]
         self.d_setPos(node[0].getX(), node[0].getY(), node[0].getZ())
         self.d_setHpr(node[1].getX(), node[1].getY(), node[1].getZ())

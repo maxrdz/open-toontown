@@ -17,14 +17,14 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
     def __init__(self, cr):
         DistributedNode.DistributedNode.__init__(self, cr)
 
-        self.bench_model = base.loader.loadModel("phase_13/models/tt_m_ara_prp_bench.bam")
-        self.bench_model.reparentTo(self)
-        self.bench_gui = SmartBenchGUI.SmartBenchGUI()
-        self.bench_timer = ToontownTimer.ToontownTimer()
-        self.bench_dialog = None
+        self.benchModel = base.loader.loadModel("phase_13/models/tt_m_ara_prp_bench.bam")
+        self.benchModel.reparentTo(self)
+        self.benchGui: SmartBenchGUI = SmartBenchGUI.SmartBenchGUI()
+        self.benchTimer: ToontownTimer = ToontownTimer.ToontownTimer()
+        self.benchDialog: TTDialog | None = None
         # I'm aware this isn't adjusted for dynamic aspect ratios, but it works :P
-        self.bench_timer.posBelowTopRightCorner()
-        self.bench_timer.hide()
+        self.benchTimer.posBelowTopRightCorner()
+        self.benchTimer.hide()
 
     def generate(self):
         self.notify.debug("Smart Bench generate received!")
@@ -38,7 +38,7 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
     def delete(self):
         self.notify.debug("Smart Bench delete received!")
         self.__deleteCollisions()
-        self.bench_gui.delete()
+        self.benchGui.delete()
         self.reparentTo(base.hidden)
         DistributedNode.DistributedNode.delete(self)
 
@@ -90,21 +90,21 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
     def respondToonSit(self, code):
         if code == 2:
             # Bench was moved while we were sitting.
-            self.bench_dialog = TTDialog.TTGlobalDialog(message=TTLocalizer.SmartBenchKickedOffDialog,
-                                                        style=OTPDialog.Acknowledge, doneEvent="benchDialogAck")
-            self.acceptOnce("benchDialogAck", self.bench_dialog.hide)
+            self.benchDialog = TTDialog.TTGlobalDialog(message=TTLocalizer.SmartBenchKickedOffDialog,
+                                                       style=OTPDialog.Acknowledge, doneEvent="benchDialogAck")
+            self.acceptOnce("benchDialogAck", self.benchDialog.hide)
             return
         elif code == 1:
             # We've been rejected from sitting.
-            self.bench_dialog = TTDialog.TTGlobalDialog(message=TTLocalizer.SmartBenchOccupiedDialog,
-                                                        style=OTPDialog.Acknowledge, doneEvent="benchDialogAck")
-            self.acceptOnce("benchDialogAck", self.bench_dialog.hide)
+            self.benchDialog = TTDialog.TTGlobalDialog(message=TTLocalizer.SmartBenchOccupiedDialog,
+                                                       style=OTPDialog.Acknowledge, doneEvent="benchDialogAck")
+            self.acceptOnce("benchDialogAck", self.benchDialog.hide)
             return
         elif code == 0:
             # We're now sitting.
-            self.bench_gui.disable()
-            self.bench_timer.show()
-            self.bench_timer.countdown(10, self.__benchTimerDone)
+            self.benchGui.disable()
+            self.benchTimer.show()
+            self.benchTimer.countdown(10, self.__benchTimerDone)
             base.localAvatar.detachCamera()
             # I spent so much time trying out relative vectors until I remembered
             # that the local toon is always at render space origin.
@@ -116,8 +116,8 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
             self.acceptOnce("shift-up", self.hopOffBench)
 
     def __benchTimerDone(self):
-        self.bench_timer.reset()
-        self.bench_timer.hide()
+        self.benchTimer.reset()
+        self.benchTimer.hide()
         base.localAvatar.attachCamera()
         base.localAvatar.startUpdateSmartCamera()
         base.localAvatar.enableAvatarControls()

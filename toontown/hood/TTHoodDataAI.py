@@ -37,10 +37,10 @@ class TTHoodDataAI(HoodDataAI.HoodDataAI):
         self.classicChar.start()
         self.addDistObj(self.classicChar)
 
-        smart_bench = DistributedSmartBenchAI.DistributedSmartBenchAI(self.air)
-        smart_bench.generateWithRequired(self.zoneId)
-        self.addDistObj(smart_bench)
-        self.smartBench = smart_bench
+        smartBench = DistributedSmartBenchAI.DistributedSmartBenchAI(self.air)
+        smartBench.generateWithRequired(self.zoneId)
+        self.addDistObj(smartBench)
+        self.smartBench = smartBench
 
         self.createButterflies(ButterflyGlobals.TTC)
 
