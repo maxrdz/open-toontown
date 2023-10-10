@@ -690,6 +690,10 @@ dclass DistributedSuperGoofy : DistributedGoofySpeedway {
 };
 
 dclass DistributedSmartBench : DistributedNode {
+  requestToonSit() airecv clsend;
+  respondToonSit(uint8(0-2));
+  requestHopOff() airecv clsend;
+  requestMove() airecv clsend;
 };
 
 dclass DistributedPartyGate : DistributedObject {

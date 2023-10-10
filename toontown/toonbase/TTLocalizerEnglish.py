@@ -9762,5 +9762,8 @@ InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  6: ''}
 PlayingCardUnknown = 'Card Name is unknown'
 SmartBenchGUILabel = 'You\'ve approached a Smart Bench! Please choose an action using the buttons below.'
-SmartBenchCancel = 'Cancel this operation.\nThis action is permanent and cannot be undone.'
+SmartBenchCancel = 'Cancel this dialog.'
+SmartBenchMove = 'Move the Smart Bench to a new location.'
 SmartBenchSit = 'Sit on the brand new Smart Bench™'
+SmartBenchOccupiedDialog = 'Sorry, the Smart Bench is currently occupied by a toon!'
+SmartBenchKickedOffDialog = 'Sorry, you\'ve been removed from the bench as it has been moved by another toon!'

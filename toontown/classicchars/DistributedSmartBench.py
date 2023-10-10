@@ -1,11 +1,13 @@
 from panda3d.core import CollisionSphere, CollisionNode, CollisionRay
-from panda3d.core import CollisionHandlerFloor, BitMask32
+from panda3d.core import CollisionHandlerFloor, BitMask32, LVecBase3f
 from direct.controls.ControlManager import CollisionHandlerRayStart
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedNode
-from direct.fsm import ClassicFSM
-from direct.fsm import State
+from otp.otpgui import OTPDialog
+from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownTimer
+from toontown.toontowngui import TTDialog
 from toontown.toontowngui import SmartBenchGUI
 
 
@@ -15,25 +17,28 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
     def __init__(self, cr):
         DistributedNode.DistributedNode.__init__(self, cr)
 
-        self.fsm = ClassicFSM.ClassicFSM(self.getName(), [
-            State.State("Available", self.enterAvailable, self.exitAvailable, ["Occupied"]),
-            State.State("Occupied", self.enterOccupied, self.exitOccupied, ["Available"])
-        ], "Available", "Available")
-        self.fsm.enterInitialState()
-
         self.bench_model = base.loader.loadModel("phase_13/models/tt_m_ara_prp_bench.bam")
         self.bench_model.reparentTo(self)
         self.bench_gui = SmartBenchGUI.SmartBenchGUI()
+        self.bench_timer = ToontownTimer.ToontownTimer()
+        self.bench_dialog = None
+        # I'm aware this isn't adjusted for dynamic aspect ratios, but it works :P
+        self.bench_timer.posBelowTopRightCorner()
+        self.bench_timer.hide()
 
     def generate(self):
         self.notify.debug("Smart Bench generate received!")
         DistributedNode.DistributedNode.generate(self)
         self.reparentTo(base.render)
         self.__initCollisions()
+        # SmartBenchGUI fires event, we make the RPC.
+        self.accept("requestSmartBenchSit", self.sendUpdate, ["requestToonSit"])
+        self.accept("requestSmartBenchMove", self.sendUpdate, ["requestMove"])
 
     def delete(self):
         self.notify.debug("Smart Bench delete received!")
         self.__deleteCollisions()
+        self.bench_gui.delete()
         self.reparentTo(base.hidden)
         DistributedNode.DistributedNode.delete(self)
 
@@ -71,7 +76,6 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
         self.cRayNodePath = None
         self.lifter = None
         self.cTrav = None
-        return
 
     def __handleCollisionEnter(self, collEntry):
         self.notify.debug('Entering Smart Bench proximity collision sphere...')
@@ -83,14 +87,41 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
         base.messenger.send("leftSmartBench")
         self.acceptOnce('enter' + self.cSphereNode.getName(), self.__handleCollisionEnter)
 
-    def enterAvailable(self):
-        pass
+    def respondToonSit(self, code):
+        if code == 2:
+            # Bench was moved while we were sitting.
+            self.bench_dialog = TTDialog.TTGlobalDialog(message=TTLocalizer.SmartBenchKickedOffDialog,
+                                                        style=OTPDialog.Acknowledge, doneEvent="benchDialogAck")
+            self.acceptOnce("benchDialogAck", self.bench_dialog.hide)
+            return
+        elif code == 1:
+            # We've been rejected from sitting.
+            self.bench_dialog = TTDialog.TTGlobalDialog(message=TTLocalizer.SmartBenchOccupiedDialog,
+                                                        style=OTPDialog.Acknowledge, doneEvent="benchDialogAck")
+            self.acceptOnce("benchDialogAck", self.bench_dialog.hide)
+            return
+        elif code == 0:
+            # We're now sitting.
+            self.bench_gui.disable()
+            self.bench_timer.show()
+            self.bench_timer.countdown(10, self.__benchTimerDone)
+            base.localAvatar.detachCamera()
+            # I spent so much time trying out relative vectors until I remembered
+            # that the local toon is always at render space origin.
+            base.camera.setPos(0, 5, 3)
+            base.camera.lookAt(base.localAvatar)
+            base.camera.setHpr(base.camera.getHpr() + LVecBase3f(0, 25, 0))
+            base.localAvatar.stopUpdateSmartCamera()
+            base.localAvatar.disableAvatarControls()
+            self.acceptOnce("shift-up", self.hopOffBench)
 
-    def exitAvailable(self):
-        pass
+    def __benchTimerDone(self):
+        self.bench_timer.reset()
+        self.bench_timer.hide()
+        base.localAvatar.attachCamera()
+        base.localAvatar.startUpdateSmartCamera()
+        base.localAvatar.enableAvatarControls()
 
-    def enterOccupied(self):
-        pass
-
-    def exitOccupied(self):
-        pass
+    def hopOffBench(self):
+        self.__benchTimerDone()
+        self.sendUpdate("requestHopOff")
