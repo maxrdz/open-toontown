@@ -32,7 +32,7 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
         self.reparentTo(base.render)
         self.__initCollisions()
         # SmartBenchGUI fires event, we make the RPC.
-        self.accept("requestSmartBenchSit", self.sendUpdate, ["requestToonSit"])
+        self.accept("requestSmartBenchSit", self.requestSmartBenchSit)
         self.accept("requestSmartBenchMove", self.sendUpdate, ["requestMove"])
 
     def delete(self):
@@ -87,6 +87,12 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
         base.messenger.send("leftSmartBench")
         self.acceptOnce('enter' + self.cSphereNode.getName(), self.__handleCollisionEnter)
 
+    def requestSmartBenchSit(self):
+        base.localAvatar.collisionsOff()
+        base.localAvatar.stopUpdateSmartCamera()
+        base.localAvatar.disableAvatarControls()
+        self.sendUpdate("requestToonSit")
+
     def respondToonSit(self, code):
         if code == 2:
             # Bench was moved while we were sitting.
@@ -111,13 +117,12 @@ class DistributedSmartBench(DistributedNode.DistributedNode):
             base.camera.setPos(0, 5, 3)
             base.camera.lookAt(base.localAvatar)
             base.camera.setHpr(base.camera.getHpr() + LVecBase3f(0, 25, 0))
-            base.localAvatar.stopUpdateSmartCamera()
-            base.localAvatar.disableAvatarControls()
             self.acceptOnce("shift-up", self.hopOffBench)
 
     def __benchTimerDone(self):
         self.benchTimer.reset()
         self.benchTimer.hide()
+        base.localAvatar.collisionsOn()
         base.localAvatar.attachCamera()
         base.localAvatar.startUpdateSmartCamera()
         base.localAvatar.enableAvatarControls()
